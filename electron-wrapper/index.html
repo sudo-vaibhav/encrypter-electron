@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encrypter</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline';"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="spinner-container" style="display: none;">
+      <div class="spinner-border text-success" role="status"></div>
+    </div>
+    <nav class="navbar navbar-light bg-light">
+      <div class="navbar-brand d-flex">
+        <img src="./lock.svg" alt="" class="" style="width: 40px;" />
+        <h2 class="ml-2 font-weight-bold">
+          Encrypter
+        </h2>
+      </div>
+    </nav>
+    <div class="container d-flex justify-content-center">
+      <form id="form" class="col-9 container mt-5">
+        <h6 class="py-4">
+          Enter the parameters below to get started
+        </h6>
+        <div class="form-group">
+          <label for="fileName">
+            <small>
+              File Name:
+            </small>
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            name="fileName"
+            id="fileName"
+            value="inputFile.txt"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="key">
+            <small>
+              Key:
+            </small>
+          </label>
+          <input
+            class="form-control"
+            type="text"
+            name="key"
+            id="key"
+            value="asfa"
+            required
+          />
+        </div>
+        <div class="d-flex py-3">
+          <button
+            class="btn btn-success primary-color-background"
+            style="flex: 1;"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f7f8;
+        word-wrap: break-word;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .navbar h2 {
+        margin-bottom: 0;
+        color: #ee4438;
+      }
+
+      .primary-color {
+        color: #126e6d;
+      }
+
+      small {
+        color: #444;
+      }
+      input.form-control {
+        border: 1px solid #126e6d;
+      }
+
+      .primary-color-background {
+        background: #126e6d;
+      }
+
+      .text-success {
+        color: #126e6d !important;
+      }
+
+      #form {
+        background: white;
+      }
+
+      .spinner-container {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: 100;
+        display: grid;
+        background-color: rgba(255, 255, 255, 0.5);
+        place-items: center;
+      }
+    </style>
+  </body>
+</html>
