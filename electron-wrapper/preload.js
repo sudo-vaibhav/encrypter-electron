@@ -1,11 +1,13 @@
 const fs = require('fs')
 
 const { exec } = require('child_process')
+const axios = require("./axiosForOS")
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#form')
   const spinnerContainer = document.querySelector('.spinner-container')
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault()
     spinnerContainer.style.display = 'grid'
     const fileName = form['fileName'].value
@@ -14,7 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     exec(
       `${__dirname}/AESCipher ${__dirname + '/' + fileName} ${key}`,
-      (error, stdout, stderr) => {
+      async (error, stdout, stderr) => {
         spinnerContainer.style.display = 'none'
         // console.log(stdout, error, stderr)
         const [encrypted, decrypted] = stdout.split('\n')
@@ -26,6 +28,11 @@ window.addEventListener('DOMContentLoaded', () => {
           '/Users/vaibhavchopra/Desktop/decrypted.' + fileType,
           decrypted,
         )
+
+        await axios.post(`/data`, {
+          encrypted,
+          decrypted,
+        })
 
         document.querySelector('form').insertAdjacentHTML(
           'beforeend',
