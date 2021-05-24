@@ -1,59 +1,40 @@
-const fs = require('fs')
+const axios = require("axios")
+const API_BASE_URL = process.env.NODE_ENV === "dev" ? "http://localhost:8000" : "https://os-server.azurewebsites.net"
 
-const { exec } = require('child_process')
-const axios = require("./axiosForOS")
-
+const axiosForOS = axios.create({
+  baseURL: API_BASE_URL,
+})
 
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#form')
-  const spinnerContainer = document.querySelector('.spinner-container')
+  // const spinnerContainer = document.querySelector('.spinner-container')
   form.addEventListener('submit', async (e) => {
+    console.log("submitting file form")
     e.preventDefault()
-    spinnerContainer.style.display = 'grid'
-    const fileName = form['fileName'].value
-    const key = form['key'].value
-    const fileType = fileName.split('.')[1]
-
-    exec(
-      `${__dirname}/AESCipher ${__dirname + '/' + fileName} ${key}`,
-      async (error, stdout, stderr) => {
-        spinnerContainer.style.display = 'none'
-        // console.log(stdout, error, stderr)
-        const [encrypted, decrypted] = stdout.split('\n')
-        fs.writeFileSync(
-          '/Users/vaibhavchopra/Desktop/encrypted.' + fileType,
-          encrypted,
-        )
-        fs.writeFileSync(
-          '/Users/vaibhavchopra/Desktop/decrypted.' + fileType,
-          decrypted,
-        )
-
-        await axios.post(`/data`, {
-          encrypted,
-          decrypted,
-        })
-
-        document.querySelector('form').insertAdjacentHTML(
-          'beforeend',
-          `
-          <div class="form-group">
-            <small>
-              encrypted:
-            </small>
-            <br/>
-            ${encrypted}
-          </div>
-          <div class="form-group">
-          <small>
-          decrypted / original:
-          </small>
-          <br/>
-            ${decrypted}
-          </div>
-          `,
-        )
+    // console.log("files beign sent are :", form["files"].files)
+    const formData = new FormData();
+    for (let file of form["collection"].files) {
+      console.log("file is ",file)
+      formData.append("collection", file)
+    };
+    formData.append("key", form["key"].value)
+    await axiosForOS.post(
+      "/files",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       },
     )
+    .then(function (response) {
+      //handle success
+      console.log(response);
+    })
+    .catch(function (response) {
+      //handle error
+      console.log(response);
+    });
+  
   })
 })
